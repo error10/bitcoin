@@ -1749,6 +1749,10 @@ bool CWallet::FundTransaction(CMutableTransaction& tx, CAmount &nFeeRet, int& nC
     }
 
     CCoinControl coinControl;
+	if (mapArgs.count("-destchange")) {
+		CBitcoinAddress addr = CBitcoinAddress(mapArgs["-destchange"]);
+		coinControl.destChange = addr.Get();
+	}
     coinControl.fAllowOtherInputs = true;
     BOOST_FOREACH(const CTxIn& txin, tx.vin)
         coinControl.Select(txin.prevout);
